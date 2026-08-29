@@ -1,0 +1,18 @@
+// Requirement nodes are intentionally data-only so each premise uses the same renderer.
+const doc = (label, constraints = []) => ({ type: 'document', label, constraints });
+const all = (...items) => ({ type: 'and', items });
+const any = (...items) => ({ type: 'or', items });
+const preferred = (primary, fallback) => ({ type: 'preferred', primary, fallback });
+
+export const premiseRequirements = [
+  { value: 'ownership', label: 'Ownership', requirement: preferred(doc('Transferor Consent/NOC'), any(doc('Registered Purchase Agreement'), doc('Sale Deed'), doc('Partition Deed'), doc('Share Certificate of registered society', ['in applicant’s name']), doc('Latest monthly maintenance receipt', ['in applicant’s name']))) },
+  { value: 'rental', label: 'Rental / lease / pagadi', requirement: preferred(doc('Transferor Consent/NOC'), any(doc('Latest rent receipt', ['within one-year time', 'in applicant’s name', 'duly discharged by owner/landlord']), doc('Registered Tenancy Agreement'), doc('Notarized Tenancy Agreement'), doc('Lease Agreement'), doc('Leave and License Agreement', ['between applicant and original consumer/landlord']))) },
+  { value: 'death', label: 'Death of registered consumer', requirement: any(doc('Latest rent receipt', ['within one-year time', 'in applicant’s name', 'duly discharged by owner/landlord']), doc('Share Certificate of registered society', ['in applicant’s name']), doc('Registered Tenancy Agreement'), doc('Notarized Tenancy Agreement'), doc('Succession Certificate'), all(doc('Family Tree', ['duly notarized', 'with contact/mobile numbers']), doc('Consent/NOC from all legal heirs')), doc('Certified copy of Will/Inheritance', ['in applicant’s name'])) },
+  { value: 'slums', label: 'Shacks / slums', requirement: preferred(doc('Transferor Consent/NOC'), any(doc('Zopda Photo Pass', ['issued by competent authority']), doc('Latest rent receipt', ['within one-year time', 'in applicant’s name', 'duly discharged by owner/landlord']), doc('Sale Deed'), doc('Survey Slip'))) },
+  { value: 'quarters', label: 'Quarters', requirement: doc('Quarters allotment letter', ['in applicant’s name']) },
+  { value: 'society', label: 'Common amenities of registered cooperative housing societies', requirement: preferred(doc('Transferor Consent/NOC'), all(doc('Registered Society Request', ['on society letterhead', 'duly stamped', 'signed by office bearer']), any(all(doc('Conveyance Deed'), doc('Transfer Deed with Developer')), doc('NOC issued by concerned Developer')))) },
+  { value: 'non-residential', label: 'Non-residential consumer', requirement: all(doc('Transferor Consent/NOC'), any(doc('Industrial Premises License', ['issued by competent authority']), doc('Shop and Establishment License'), doc('Companies Registration Certificate'), doc('Partnership Deed'))) },
+  { value: 'mhada', label: 'MHADA / SRA cases', requirement: any(all(doc('Transferor Consent/NOC'), doc('MHADA/SRA NOC')), all(any(doc('Allotment Letter'), doc('Transfer Letter')), doc('Latest Maintenance Receipt', ['issued by MHADA/SRA/Manager BDD/BIT Chawl', 'in applicant’s name'])), any(doc('Registered Purchase Agreement'), doc('Sale Deed'), doc('Partition Deed'), doc('Share Certificate of registered society', ['from a registered society', 'in applicant’s name']))) },
+  { value: 'merger', label: 'Amalgamation / merger', requirement: any(doc('Certificate of Incorporation', ['issued by Registrar']), doc('High Court Order')) },
+  { value: 'name-change', label: 'Applicant has changed their own name', requirement: all(any(doc('Affidavit'), doc('Gazette Notification')), any(doc('Rent Receipt'), doc('Maintenance Receipt', ['in new name']))) },
+];
