@@ -219,10 +219,7 @@ const connectionUses = [
   "Construction",
   "Ganpati festival",
 ];
-const API_BASE_URL = import.meta.env.VITE_ENVIRONMENT == "local"
-  ? import.meta.env.VITE_API_LOCAL
-  : import.meta.env.VITE_API_PROD;
-  
+
 function Header({ home }) {
   return (
     <header className="site-header">
@@ -1234,7 +1231,7 @@ function NameSuccess({ documentNumbers, home, nameChangeData, number }) {
       form.append("signature", nameChangeData.signature);
 
       const response = await fetch(
-        `${API_BASE_URL}/api/undertaking`,
+        `${import.meta.env.VITE_API_URL}/api/undertaking`,
         {
           method: "POST",
           body: form,
